@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Connection, ConnectionStates } from 'mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 
 const mongoLogger = new Logger('MongoDB');
@@ -40,6 +41,7 @@ const mongoLogger = new Logger('MongoDB');
       }),
       inject: [ConfigService],
     }),
+    AuthModule,
     UserModule,
   ],
   controllers: [AppController],
