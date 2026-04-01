@@ -4,11 +4,15 @@ import {
   UploadedFile,
   UseInterceptors,
   BadRequestException,
+  Body,
+  Req,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { InterviewService } from './interview.service';
+import { Request } from 'express';
+import { InterviewMode } from './entities/interview.entity';
 
 interface UploadedFile {
   filename: string;
@@ -49,5 +53,32 @@ export class InterviewController {
       throw new BadRequestException('Resume file is required');
     }
     return this.interviewService.analyzeResume(file);
+  }
+
+  @Post('start')
+  async startInterview(@Req() req: Request, @Body() body: any) {
+    const { userId } = req.user as { userId: string; email: string };
+    const { role, experience, mode, resumeText, projects, skills } = body;
+
+    if (
+      !role ||
+      experience ||
+      mode ||
+      resumeText ||
+      !Array.isArray(projects) ||
+      !Array.isArray(skills)
+    ) {
+      throw new BadRequestException('Required parameters are missing');
+    }
+
+    return await this.interviewService.startInterview(
+      userId,
+      role,
+      experience,
+      mode as InterviewMode,
+      resumeText,
+      projects || [],
+      skills || [],
+    );
   }
 }
