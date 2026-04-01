@@ -23,4 +23,15 @@ export class UserService {
     if (!user) throw new NotFoundException('User not found');
     return user;
   }
+
+  async updateUser(
+    id: string,
+    updates: Partial<Pick<User, 'name' | 'credits'>>,
+  ): Promise<UserDocument> {
+    const user = await this.userModel
+      .findByIdAndUpdate(id, updates, { new: true })
+      .exec();
+    if (!user) throw new NotFoundException('User not found');
+    return user;
+  }
 }

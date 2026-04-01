@@ -6,6 +6,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { AiModelModule } from './ai-model/ai-model.module';
+import { InterviewModule } from './interview/interview.module';
 
 const mongoLogger = new Logger('MongoDB');
 
@@ -43,6 +45,8 @@ const mongoLogger = new Logger('MongoDB');
     }),
     AuthModule,
     UserModule,
+    AiModelModule,
+    InterviewModule,
   ],
   controllers: [AppController],
   providers: [AppService],
