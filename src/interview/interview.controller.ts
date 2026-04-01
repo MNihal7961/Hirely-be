@@ -81,4 +81,27 @@ export class InterviewController {
       skills || [],
     );
   }
+
+  @Post('answer')
+  async answerQuestion(@Body() body: any) {
+    const { interviewId, questionIndex, answer, timeTaken } = body;
+    if (!interviewId || !questionIndex || !timeTaken || !answer) {
+      throw new BadRequestException('Required parameters are missing');
+    }
+    return await this.interviewService.submitAnswer(
+      interviewId,
+      Number(questionIndex),
+      answer,
+      Number(timeTaken),
+    );
+  }
+
+  @Post('finish')
+  async finishInterview(@Body() body: any) {
+    const { interviewId } = body;
+    if (!interviewId) {
+      throw new BadRequestException('Interview id is missing');
+    }
+    return await this.interviewService.finishInterview(interviewId);
+  }
 }
